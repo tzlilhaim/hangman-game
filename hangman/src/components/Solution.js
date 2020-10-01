@@ -12,8 +12,12 @@ class Solution extends Component {
             return (
               <Letter
                 key={`solution-${index}`}
-                letter={this.props.letterStatus[letter.toUpperCase()] ? letter : "_"}
-                isAvailable={!!this.props.letterStatus[letter]}
+                letter={
+                  this.props.letterStatus[letter.toUpperCase()] ? letter : "_"
+                }
+                isAvailable={
+                  this.props.letterStatus[letter.toUpperCase()]
+                }
               />
             )
           })}

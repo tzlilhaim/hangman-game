@@ -64,3 +64,13 @@
 #letters > span.letter[data-is-available=true]:hover{
   color: rgb(150, 62, 252);
 }
+
+.high{
+  color: green;
+}
+.medium{
+  color: orange;
+}
+.low{
+  color: red;
+}

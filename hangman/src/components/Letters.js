@@ -12,6 +12,7 @@ class Letters extends Component {
               key={letter}
               letter={letter}
               isAvailable={!this.props.letterStatus[letter]}
+              selectLetter={this.props.selectLetter}
             />
           )
         })}
