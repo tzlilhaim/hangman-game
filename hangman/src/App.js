@@ -16,12 +16,55 @@ class App extends Component {
         {
           id: 0,
           word: "Soup",
-          hint: "A winter comfort food",
+          hint: "I'm a food but also a drink",
         },
         {
           id: 1,
           word: "Genie",
-          hint: "A magician trapped in a bottle",
+          hint: "I'm a magician trapped in a bottle",
+        },
+        {
+          id: 2,
+          word: "Moose",
+          hint: "I'm an animal with hair products",
+        },
+        {
+          id: 3,
+          word: "Sponge",
+          hint: "I'm full of holes but I still hold water",
+        },
+        {
+          id: 4,
+          word: "Future",
+          hint: "I'm always in front of you, but I cannot be seen",
+        },
+        {
+          id: 5,
+          word: "Echo",
+          hint: "What can’t talk but will reply when spoken to",
+        },
+        {
+          id: 6,
+          word: "Yarn",
+          hint:
+            "I’m found in socks, scarves and mittens; and often in the paws of playful kittens",
+        },
+        {
+          id: 7,
+          word: "Window",
+          hint: "What invention lets you look right through a wall?",
+        },
+        {
+          id: 8,
+          word: "Secret",
+          hint:
+            "If you’ve got me, you mustn't share me; if you share me, you haven’t kept me. What am I?",
+        },
+        {
+          id: 9,
+          word: "Name",
+          hint:
+            "It belongs to you, but other people use it more than you do. What is it?",
         },
       ],
       activeSolution: {},
@@ -101,9 +144,7 @@ class App extends Component {
     })
   }
   restartGame = async (solutionId) => {
-    if (this.state.activeSolution.id !== solutionId) {
-      await this.setActiveSolution(solutionId)
-    }
+    await this.setActiveSolution(solutionId)
     let resetGameStatus = this.state.gameStatus
     resetGameStatus.isGameOver = false
     resetGameStatus.isPlayerWon = false

@@ -1,5 +1,15 @@
+* {
+  font-size: x-large;
+}
 .App {
   text-align: center;
+  width: 100w;
+  height: 500px;
+  min-height: fit-content;
+  padding: 20px;
+  border: solid 2px black;
+  margin: 5%;
+  background-color: rgb(219, 192, 192);
 }
 
 .App-logo {
@@ -37,40 +47,57 @@
   }
 }
 
-.letter{
+.letter {
   margin-left: 10px;
 }
 
-#word > span.letter[data-is-available=true]{
+#word > span.letter[data-is-available="true"] {
   color: black;
 }
 
-#word > span.letter[data-is-available=true]{
+#word > span.letter[data-is-available="true"] {
   color: grey;
   font-weight: bold;
 }
 
-#letters > span.letter[data-is-available=false]{
+#letters > span.letter[data-is-available="false"] {
   text-decoration: line-through;
   color: grey;
 }
 
-#letters > span.letter[data-is-available=true]{
+#letters > span.letter[data-is-available="true"] {
   font-weight: bold;
   color: black;
   cursor: pointer;
 }
 
-#letters > span.letter[data-is-available=true]:hover{
-  color: rgb(150, 62, 252);
+#letters > span.letter[data-is-available="true"]:hover {
+  color: rgb(114, 44, 44);
 }
 
-.high{
+#score {
+  font-weight: bold;
+  font-size: larger;
+}
+.high {
   color: green;
 }
-.medium{
-  color: orange;
+.medium {
+  color: rgb(221, 118, 0);
 }
-.low{
-  color: red;
+.low {
+  color: rgb(192, 0, 0);
+}
+
+button {
+  outline: none;
+  cursor: pointer;
+  padding: 20px;
+  border: solid 2px black;
+  background-color: transparent;
+}
+
+button:hover,button:active{
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
 }
