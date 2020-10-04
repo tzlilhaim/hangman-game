@@ -1,21 +1,23 @@
 import React, { Component } from "react"
+import Hangman from "../Hangman"
 
 class Loser extends Component {
-  restartGameSameWord = () => {
-    this.props.restartGame(this.props.solutionId)
+  startNewGame = () => {
+    this.props.restartGame()
   }
   render() {
     return (
       <div id="loser">
         <h2>Game Over</h2>
-        <p>Better luck next time</p>
+        <p>Better luck next time...</p>
         <button
           id="try-again"
           className="restart-btn"
-          onClick={this.restartGameSameWord}
+          onClick={this.startNewGame}
         >
-          Try Again
+          Start Over
         </button>
+        <Hangman score={this.props.score} />
       </div>
     )
   }

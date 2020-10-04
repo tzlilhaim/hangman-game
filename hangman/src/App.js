@@ -5,6 +5,8 @@ import Score from "./components/Score"
 import Letters from "./components/Letters"
 import StartGame from "./components/startGame/StartGame"
 import EndGame from "./components/endGame/EndGame"
+import EndLevel from "./components/endLevel/EndLevel"
+import Hangman from "./components/Hangman"
 import "./App.css"
 
 class App extends Component {
@@ -14,54 +16,54 @@ class App extends Component {
       letterStatus: this.generateLetterStatuses(),
       solutions: [
         {
-          id: 0,
+          level: 1,
           word: "Soup",
           hint: "I'm a food but also a drink",
         },
         {
-          id: 1,
+          level: 2,
           word: "Genie",
           hint: "I'm a magician trapped in a bottle",
         },
         {
-          id: 2,
+          level: 3,
           word: "Moose",
           hint: "I'm an animal with hair products",
         },
         {
-          id: 3,
+          level: 4,
           word: "Sponge",
           hint: "I'm full of holes but I still hold water",
         },
         {
-          id: 4,
+          level: 5,
           word: "Future",
           hint: "I'm always in front of you, but I cannot be seen",
         },
         {
-          id: 5,
+          level: 6,
           word: "Echo",
           hint: "What can’t talk but will reply when spoken to",
         },
         {
-          id: 6,
+          level: 7,
           word: "Yarn",
           hint:
             "I’m found in socks, scarves and mittens; and often in the paws of playful kittens",
         },
         {
-          id: 7,
+          level: 8,
           word: "Window",
           hint: "What invention lets you look right through a wall?",
         },
         {
-          id: 8,
+          level: 9,
           word: "Secret",
           hint:
             "If you’ve got me, you mustn't share me; if you share me, you haven’t kept me. What am I?",
         },
         {
-          id: 9,
+          level: 10,
           word: "Name",
           hint:
             "It belongs to you, but other people use it more than you do. What is it?",
@@ -83,8 +85,24 @@ class App extends Component {
     }
     return letterStatus
   }
-  findSolutionById = (id) => {
-    const solution = this.state.solutions.find((s) => s.id === id)
+  resetStates = {
+    letterStatus: async () => {
+      let resetLetterStatus = this.generateLetterStatuses()
+      this.setState({ letterStatus: resetLetterStatus })
+    },
+    gameStatus: async () => {
+      let resetGameStatus = this.state.gameStatus
+      resetGameStatus.isGameOver = false
+      resetGameStatus.isPlayerWon = false
+      resetGameStatus.isGameStarted = true
+      this.setState({ gameStatus: resetGameStatus })
+    },
+    score: async () => {
+      this.setState({ score: 100 })
+    },
+  }
+  findSolutionOfLevel = (level) => {
+    const solution = this.state.solutions.find((s) => s.level === level)
     return solution
   }
   endGame = () => {
@@ -101,22 +119,24 @@ class App extends Component {
         letterStatus: allLetters,
       },
       () => {
-        let currScore = this.state.score
-        const word = this.findSolutionById(this.state.activeSolution.id).word
+        const word = this.findSolutionOfLevel(this.state.activeSolution.level)
+          .word
         let isLetterInWord =
           word.includes(letter) || word.includes(letter.toLowerCase())
         if (isLetterInWord) {
-          if (currScore < 100) {
-            this.setState({ score: currScore + 10 })
-          }
           let updatedSolution = this.state.activeSolution
           updatedSolution.lettersToFind--
           this.setState({ activeSolution: updatedSolution }, () => {
             if (this.state.activeSolution.lettersToFind === 0) {
-              this.endGame()
+              if (
+                this.state.activeSolution.level === this.state.solutions.length
+              ) {
+                this.endGame()
+              }
             }
           })
         } else {
+          const currScore = this.state.score
           if (currScore > 0) {
             this.setState({ score: currScore - 10 }, () => {
               if (this.state.score === 0) {
@@ -128,34 +148,30 @@ class App extends Component {
       }
     )
   }
-  setActiveSolution = (currId) => {
-    const id = currId > this.state.solutions.length - 1 ? 0 : currId
+  setActiveSolution = (level) => {
     const uniqueLettersInWord = []
-    this.findSolutionById(id)
+    this.findSolutionOfLevel(level)
       .word.split("")
       .forEach((letter) => {
-        if (!uniqueLettersInWord.includes(letter)) {
-          uniqueLettersInWord.push(letter)
+        if (!uniqueLettersInWord.includes(letter.toUpperCase())) {
+          uniqueLettersInWord.push(letter.toUpperCase())
         }
       })
-    let lettersToFind = uniqueLettersInWord.length
+    const lettersToFind = uniqueLettersInWord.length
     this.setState({
-      activeSolution: { id, lettersToFind },
+      activeSolution: { level, lettersToFind },
     })
   }
-  restartGame = async (solutionId) => {
-    await this.setActiveSolution(solutionId)
-    let resetGameStatus = this.state.gameStatus
-    resetGameStatus.isGameOver = false
-    resetGameStatus.isPlayerWon = false
-    this.setState({ gameStatus: resetGameStatus })
-    let resetLetterStatus = this.generateLetterStatuses()
-    this.setState({ letterStatus: resetLetterStatus })
-    this.setState({ score: 100 })
+  getNextLevel = async (level) => {
+    const nextLevel = level + 1
+    await this.setActiveSolution(nextLevel)
+    await this.resetStates.letterStatus()
   }
-  startGame = () => {
-    this.setActiveSolution(0)
-    this.state.gameStatus.isGameStarted = true
+  startGame = async () => {
+    this.setActiveSolution(1)
+    await this.resetStates.gameStatus()
+    await this.resetStates.letterStatus()
+    await this.resetStates.score()
   }
 
   render() {
@@ -163,15 +179,21 @@ class App extends Component {
       <div className="App">
         {this.state.gameStatus.isGameStarted ? (
           this.state.gameStatus.isGameOver ? (
-            <EndGame
-              isPlayerWon={this.state.gameStatus.isPlayerWon}
-              restartGame={this.restartGame}
-              solutionId={this.state.activeSolution.id}
-            />
-          ) : (
+            <div>
+              <EndGame
+                isPlayerWon={this.state.gameStatus.isPlayerWon}
+                restartGame={this.startGame}
+                level={this.state.activeSolution.level}
+                score={this.state.score}
+              />
+            </div>
+          ) : this.state.activeSolution.lettersToFind ? (
             <div>
               <Solution
-                solution={this.findSolutionById(this.state.activeSolution.id)}
+                solution={this.findSolutionOfLevel(
+                  this.state.activeSolution.level
+                )}
+                level={this.state.activeSolution.level}
                 letterStatus={this.state.letterStatus}
               />
               <Score score={this.state.score} />
@@ -179,7 +201,16 @@ class App extends Component {
                 letterStatus={this.state.letterStatus}
                 selectLetter={this.selectLetter}
               />
+              <Hangman score={this.state.score} />
             </div>
+          ) : (
+            <EndLevel
+              solution={this.findSolutionOfLevel(
+                this.state.activeSolution.level
+              )}
+              score={this.state.score}
+              nextLevel={this.getNextLevel}
+            />
           )
         ) : (
           <StartGame startGame={this.startGame} />

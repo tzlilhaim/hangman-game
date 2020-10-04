@@ -9,12 +9,14 @@ class EndGame extends Component {
         {this.props.isPlayerWon ? (
           <Winner
             restartGame={this.props.restartGame}
-            solutionId={this.props.solutionId}
+            level={this.props.level}
+            score={this.props.score}
           />
         ) : (
           <Loser
             restartGame={this.props.restartGame}
-            solutionId={this.props.solutionId}
+            level={this.props.level}
+            score={this.props.score}
           />
         )}
       </div>

@@ -1,15 +1,23 @@
 * {
-  font-size: x-large;
+  box-sizing: border-box;
 }
 .App {
   text-align: center;
-  width: 100w;
-  height: 500px;
-  min-height: fit-content;
+  width: 80vw;
+  height: 100vh;
+  max-width: 1200px;
   padding: 20px;
-  border: solid 2px black;
   margin: 5%;
-  background-color: rgb(219, 192, 192);
+  background-image: url("./assets/notebook.png");
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-color: transparent;
+}
+
+.App > div {
+  display: grid;
+  grid-auto-rows: auto;
+  grid-gap: 10px;
 }
 
 .App-logo {
@@ -47,8 +55,41 @@
   }
 }
 
+#start-screen {
+  margin-top: 100px;
+  font-size: larger;
+}
+
+#loser {
+  margin-top: 100px;
+  display: grid;
+  font-size: larger;
+}
+#winner {
+  margin-top: 100px;
+  display: grid;
+  font-size: larger;
+}
+#end-level {
+  margin-top: 100px;
+  display: grid;
+  font-size: larger;
+}
+
+#letters,
+#solution,
+#score,
+#hangman {
+  font-size: x-large;
+  width: 100%;
+  height: 100%;
+  padding-left: 40px;
+  padding-right: 30px;
+  display: inline-block;
+}
 .letter {
   margin-left: 10px;
+  display: inline-block;
 }
 
 #word > span.letter[data-is-available="true"] {
@@ -72,12 +113,22 @@
 }
 
 #letters > span.letter[data-is-available="true"]:hover {
-  color: rgb(114, 44, 44);
+  color: rgb(9, 93, 190);
+}
+#solution {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+}
+#level {
+  color: gray;
+  float: left;
+  display: flex;
+  margin: 0;
+  margin-left: 10%;
 }
 
 #score {
   font-weight: bold;
-  font-size: larger;
 }
 .high {
   color: green;
@@ -89,15 +140,125 @@
   color: rgb(192, 0, 0);
 }
 
+#correct-solution {
+  font-size: larger;
+  color: gray;
+  font-weight: bold;
+}
+
 button {
   outline: none;
   cursor: pointer;
   padding: 20px;
   border: solid 2px black;
   background-color: transparent;
+  font-size: large;
+  max-width: 200px;
+  justify-self: center;
 }
 
-button:hover,button:active{
+button:hover,
+button:active {
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
+}
+
+#hangman {
+  height: 450px;
+  margin: 0;
+  max-width: 400px;
+  background-size: cover;
+  background-color: transparent;
+  margin-left: 150px;
+  margin-top: 20px;
+}
+#hangman[data-score="90"] {
+  background-image: url("./assets/1.png");
+}
+#hangman[data-score="80"] {
+  background-image: url("./assets/2.png");
+}
+#hangman[data-score="70"] {
+  background-image: url("./assets/3.png");
+}
+#hangman[data-score="60"] {
+  background-image: url("./assets/4.png");
+}
+#hangman[data-score="50"] {
+  background-image: url("./assets/5.png");
+}
+#hangman[data-score="40"] {
+  background-image: url("./assets/6.png");
+}
+#hangman[data-score="30"] {
+  background-image: url("./assets/7.png");
+}
+#hangman[data-score="20"] {
+  background-image: url("./assets/8.png");
+}
+#hangman[data-score="10"],
+#hangman[data-score="0"] {
+  background-image: url("./assets/9.png");
+}
+
+#hangman[data-score="999"] {
+  background-image: url("./assets/winner.png");
+}
+
+@media screen and (max-width: 950px) {
+  #hangman {
+    height: 380px;
+    max-width: 320px;
+    margin-top: 10px;
+  }
+}
+
+@media screen and (max-width: 820px) {
+  #hangman {
+    height: 350px;
+    max-width: 300px;
+    margin-top: 20px;
+  }
+  .App {
+    width: 90vw;
+  }
+  button {
+    font-size: medium;
+  }
+  #letters,
+  #solution,
+  #score {
+    font-size: medium;
+  }
+}
+@media screen and (max-width: 620px) {
+  #hangman {
+    margin-top: 0;
+    height: 250px;
+    max-width: 200px;
+  }
+  #letters,
+  #solution,
+  #score {
+    font-size: small;
+  }
+}
+@media screen and (max-width: 470px) {
+  #letters,
+  #solution,
+  #score {
+    font-size: x-small;
+  }
+  #hangman {
+    height: 180px;
+    max-width: 150px;
+    margin-left: 100px;
+  }
+}
+
+@media screen and (max-width: 370px) {
+  #hangman {
+    height: 110px;
+    max-width: 90px;
+  }
 }
