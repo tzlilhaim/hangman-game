@@ -7,7 +7,6 @@ class Letter extends Component {
   render() {
     return (
       <span
-        key={this.props.key}
         className="letter"
         data-is-available={this.props.isAvailable}
         disabled={!this.props.isAvailable}
