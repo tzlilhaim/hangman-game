@@ -7,6 +7,7 @@ import StartGame from "./components/startGame/StartGame"
 import EndGame from "./components/endGame/EndGame"
 import EndLevel from "./components/endLevel/EndLevel"
 import Hangman from "./components/Hangman"
+import solutions from "./solutions"
 import "./App.css"
 
 class App extends Component {
@@ -14,61 +15,7 @@ class App extends Component {
     super()
     this.state = {
       letterStatus: this.generateLetterStatuses(),
-      solutions: [
-        {
-          level: 1,
-          word: "Soup",
-          hint: "I'm a food but also a drink",
-        },
-        {
-          level: 2,
-          word: "Genie",
-          hint: "I'm a magician trapped in a bottle",
-        },
-        {
-          level: 3,
-          word: "Moose",
-          hint: "I'm an animal with hair products",
-        },
-        {
-          level: 4,
-          word: "Sponge",
-          hint: "I'm full of holes but I still hold water",
-        },
-        {
-          level: 5,
-          word: "Future",
-          hint: "I'm always in front of you, but I cannot be seen",
-        },
-        {
-          level: 6,
-          word: "Echo",
-          hint: "What can’t talk but will reply when spoken to",
-        },
-        {
-          level: 7,
-          word: "Yarn",
-          hint:
-            "I’m found in socks, scarves and mittens; and often in the paws of playful kittens",
-        },
-        {
-          level: 8,
-          word: "Window",
-          hint: "What invention lets you look right through a wall?",
-        },
-        {
-          level: 9,
-          word: "Secret",
-          hint:
-            "If you’ve got me, you mustn't share me; if you share me, you haven’t kept me. What am I?",
-        },
-        {
-          level: 10,
-          word: "Name",
-          hint:
-            "It belongs to you, but other people use it more than you do. What is it?",
-        },
-      ],
+      solutions: solutions,
       activeSolution: {},
       score: 100,
       gameStatus: {
@@ -88,17 +35,17 @@ class App extends Component {
   resetStates = {
     letterStatus: async () => {
       let resetLetterStatus = this.generateLetterStatuses()
-      this.setState({ letterStatus: resetLetterStatus })
+      await this.setState({ letterStatus: resetLetterStatus })
     },
     gameStatus: async () => {
       let resetGameStatus = this.state.gameStatus
       resetGameStatus.isGameOver = false
       resetGameStatus.isPlayerWon = false
       resetGameStatus.isGameStarted = true
-      this.setState({ gameStatus: resetGameStatus })
+      await this.setState({ gameStatus: resetGameStatus })
     },
     score: async () => {
-      this.setState({ score: 100 })
+      await this.setState({ score: 100 })
     },
   }
   findSolutionOfLevel = (level) => {
@@ -139,7 +86,7 @@ class App extends Component {
           const currScore = this.state.score
           if (currScore > 0) {
             this.setState({ score: currScore - 10 }, () => {
-              if (this.state.score === 0) {
+              if (this.state.score <= 0) {
                 this.endGame()
               }
             })
@@ -162,16 +109,16 @@ class App extends Component {
       activeSolution: { level, lettersToFind },
     })
   }
-  getNextLevel = async (level) => {
+  getNextLevel = (level) => {
     const nextLevel = level + 1
-    await this.setActiveSolution(nextLevel)
-    await this.resetStates.letterStatus()
+    this.setActiveSolution(nextLevel)
+    this.resetStates.letterStatus()
   }
-  startGame = async () => {
+  startGame = () => {
     this.setActiveSolution(1)
-    await this.resetStates.gameStatus()
-    await this.resetStates.letterStatus()
-    await this.resetStates.score()
+    this.resetStates.gameStatus()
+    this.resetStates.letterStatus()
+    this.resetStates.score()
   }
 
   render() {
